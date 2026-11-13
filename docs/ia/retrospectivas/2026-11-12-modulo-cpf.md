@@ -1,0 +1,13 @@
+# Retrospectiva: Módulo CPF (validador + gerador)
+- data: 2026-11-12
+- tarefa: docs/ia/tarefas/2026-11-12-modulo-cpf.md
+- pedido_original: módulo Python com validação de CPF (com/sem pontuação) e gerador de CPFs fictícios válidos, com testes bem cobertos, delegando ao Codex pela Alethe
+- agentes: lead (Claude), Codex via Alethe (2 workers: validador, gerador), qa, revisor
+- playbook: nenhum (delegação passiva da Alethe, 2 workers em paralelo)
+- resultado: concluida
+- o_que_funcionou: contrato de interface fechado no brief permitiu validador e gerador em paralelo, sem conflito; verificador independente nos testes do gerador + oráculo do QA em 100 mil CPFs deram confiança real
+- o_que_falhou: Codex não achou Python no sandbox e não executou os testes; isolate falhou por repositório sem commits; gerar_cpfs(unicos=True) podia entrar em laço infinito (achado do revisor)
+- causa: sandbox do worker sem Python no PATH; git sem commit inicial (HEAD inválido); brief não previa limite de unicidade
+- licao: antes de delegar com isolate, garantir commit inicial; avisar que o lead roda os testes quando o worker não tem o interpretador; briefs de geradores devem definir o limite do espaço de valores únicos
+- alvo: regra | global | delegação ao Codex
+- proposta: no brief padrão, incluir "se não achar Python, reporte e não tente instalar; o lead executa os testes"; checar `git rev-parse HEAD` antes de usar isolate
