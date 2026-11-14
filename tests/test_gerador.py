@@ -79,5 +79,41 @@ class GeradorCpfTest(unittest.TestCase):
         self.assertTrue(all(_cpf_valido(cpf) for cpf in cpfs))
 
 
+class _RngComRepetidos(random.Random):
+    """Devolve bases repetidas e extremos antes de uma base comum."""
+
+    def __init__(self) -> None:
+        super().__init__(0)
+        self._fila = [0, 111111111, 999999999, 222222222, 123456789]
+
+    def randrange(self, *args, **kwargs):  # type: ignore[override]
+        return self._fila.pop(0)
+
+
+class DesempenhoEConsistenciaTest(unittest.TestCase):
+    def test_bases_repetidas_sao_descartadas(self) -> None:
+        self.assertEqual(gerar_cpf(rng=_RngComRepetidos())[:9], "123456789")
+        self.assertEqual(
+            gerar_cpfs(1, rng=_RngComRepetidos())[0][:9], "123456789"
+        )
+
+    def test_gerar_cpfs_consome_rng_como_gerar_cpf(self) -> None:
+        em_lote = gerar_cpfs(50, rng=random.Random(5))
+        rng = random.Random(5)
+        unitarios = [gerar_cpf(rng=rng) for _ in range(50)]
+        self.assertEqual(em_lote, unitarios)
+
+    def test_amostra_grande_unica_e_valida(self) -> None:
+        cpfs = gerar_cpfs(200_000, rng=random.Random(99))
+        self.assertEqual(len(set(cpfs)), 200_000)
+        self.assertTrue(all(_cpf_valido(cpf) for cpf in cpfs))
+
+    def test_sem_unicidade_tambem_gera_validos(self) -> None:
+        cpfs = gerar_cpfs(1000, formatado=True, unicos=False, rng=random.Random(3))
+        self.assertTrue(
+            all(_cpf_valido(c.replace(".", "").replace("-", "")) for c in cpfs)
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

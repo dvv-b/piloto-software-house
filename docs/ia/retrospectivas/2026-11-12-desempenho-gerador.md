@@ -1,0 +1,13 @@
+# Retrospectiva: Desempenho do gerador de CPFs (1M únicos)
+- data: 2026-11-12
+- tarefa: docs/ia/tarefas/2026-11-12-desempenho-gerador.md
+- pedido_original: Analise o desempenho do gerador de CPFs para gerar 1 milhão de CPFs únicos e otimize o que for gargalo.
+- agentes: lead (Claude), planejador, qa, revisor
+- playbook: direct
+- resultado: concluida
+- o_que_funcionou: planejador mediu com cProfile e prototipou 3 opções antes de implementar; oráculo independente em 1M (QA) e mutação manual provaram os testes; ganho de 5x (10,85 s -> 2,15 s)
+- o_que_falhou: nada bloqueante; protótipo do planejador usou tabela de DV pequena demais (IndexError), corrigido calculando o tamanho a partir dos pesos
+- causa: soma máxima do 2º dígito não foi calculada antes de fixar o tamanho
+- licao: otimizar só após medir; o gargalo real era o sorteio dígito a dígito (51%) e o cálculo de DV (27%), não a unicidade; tabelas pré-calculadas devem ter tamanho derivado, não fixo
+- alvo: nenhum
+- proposta: nenhuma. Registrado: valores por semente mudaram (determinismo por semente mantido); float em `quantidade` é aceito (pendência menor); caminho de colisão com unicos=True sem teste direto
