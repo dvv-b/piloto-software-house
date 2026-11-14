@@ -15,5 +15,8 @@ labels: ["demanda"]
 <!-- Tarefas: objetivo, agente responsável, critério de pronto, como testar. -->
 - [ ] 
 
+## Andamento
+<!-- Estado de cada tarefa, decisões e próximo passo. Atualizado a cada tarefa concluída. -->
+
 ## Registro
 <!-- Cada agente comenta abaixo com seu bloco "Registro". A retrospectiva fecha a issue. -->

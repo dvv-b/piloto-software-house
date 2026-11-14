@@ -1,0 +1,22 @@
+# Roda os testes em todo Pull Request e em todo push na main.
+# Ajustado do modelo da Software House: este projeto usa unittest (sem pytest).
+name: testes
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Rodar testes
+        # Só biblioteca padrão: nada a instalar (ver AGENTS.md).
+        run: python -m unittest discover -s tests -t .
