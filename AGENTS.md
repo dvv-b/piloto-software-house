@@ -10,6 +10,7 @@ Piloto da Software House. Contém o módulo `cpf/` (Python, só biblioteca padr�
 - Linguagem/framework: Python 3.12, somente biblioteca padrão (`unittest`; pytest não está instalado)
 - Instalar: nada a instalar
 - Rodar: `from cpf import validar_cpf, gerar_cpf` (a partir da raiz do projeto)
+- CLI: `python -m cpf <validar|gerar|formatar>` (uso detalhado no README.md da raiz)
 - Testar: `python -m unittest discover -s tests -t .`
 
 ## Regras do projeto
